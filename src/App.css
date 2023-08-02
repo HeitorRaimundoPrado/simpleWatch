@@ -1,0 +1,117 @@
+* {
+  margin: 0;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+}
+
+#root {
+  margin: 0 0;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+
+.app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.app-dark {
+  background-color: #3D4C57;
+}
+
+.app-light {
+  background-color: #C1BDC7;
+}
+
+input {
+  border-radius: 3px;
+  border: 1px solid #000;
+  box-shadow: none;
+  margin-right: 1rem;
+  padding: 10px;
+  margin-top: 3rem;
+  outline: none;
+}
+
+.input-dark {
+  background-color: #687380;
+  color: #fff;
+  border: none;
+}
+
+button {
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.button-light {
+  background-color: #888193;
+  color: #fff;
+}
+
+.button-dark {
+  background-color: #555E6E;
+  color: #fff;
+}
+
+.watch-light {
+  background-color: #A6A0AE;
+  color: #fff;
+}
+
+.watch-dark {
+  background-color: #687380;
+  color: #fff;
+}
+
+.watch {
+  border-radius: 5px;
+  width: 6rem;
+  height: 4rem;
+  margin-top: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.watch div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  .watch {
+    width: 90%;
+    height: 50%;
+    font-size: 4rem;
+    border-radius: 25px;
+  }
+
+  input {
+    height: 40px;
+    border-radius: 10px;
+  }
+
+  button {
+    height: 60px;
+    border-radius: 10px;
+  }
+}
