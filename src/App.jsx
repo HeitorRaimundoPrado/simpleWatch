@@ -116,37 +116,6 @@ const ChessClock = () => {
 
   const theme = useContext(themeContext);
 
-  const handleOneSec = () => {
-    if (firstValue <= 0 || secondValue <= 0) {
-      clearTimeout(timeoutRef);
-      return;
-    } 
-
-    if (firstValueActive) {
-      setFirstValue(prevValue => {
-        if (prevValue <= 0) {
-          clearTimeout(timeoutRef);
-          return 0;
-        }
-
-        return prevValue - 1
-      });
-
-      setTimeoutRef(setTimeout(handleOneSec, 1000));
-    }
-
-    else {
-      setSecondValue(prevValue => {
-        if (prevValue <= 0) {
-          clearTimeout(timeoutRef);
-          return 0;
-        }
-        return prevValue - 1
-      });
-      setTimeoutRef(setTimeout(handleOneSec, 1000));
-    }
-  }
-
   const handleSetClocks = () => {
     let intFirstClock = parseInt(firstClockStr);
     let intSecondClock = parseInt(secondClockStr);
@@ -156,32 +125,80 @@ const ChessClock = () => {
       return;
     }
 
+    console.log(timeoutRef);
     if (timeoutRef !== null) {
-      clearTimeout(timeoutRef);
+      clearInterval(timeoutRef);
     }
 
     setFirstValue(intFirstClock);
     setSecondValue(intSecondClock);
-    setFirstValueActive(false);
-    setTimeoutRef(setTimeout(handleOneSec, 1000));
+    setFirstValueActive(null);
+    setActive(false);
   };
 
-  const handleChangeCurrentWatch = () => {
-    clearTimeout(timeoutRef);
-    setFirstValueActive(prevValue => prevValue == true ? false : true); // change to opposing clock
-    setTimeoutRef(setTimeout(handleOneSec, 1000));
-  }
+  const handleChangeCurrentWatch = useCallback((clockClicked) => {
+
+    console.log("timeoutRef => " + timeoutRef);
+    
+    setFirstValueActive(prevValue => {
+      console.log(prevValue)
+      console.log(clockClicked);
+
+      if (prevValue === null) {
+        return !clockClicked;
+      }
+
+      else if (prevValue !== clockClicked) {
+        return prevValue;
+      }
+
+      return prevValue == true ? false : true 
+    }); // change to opposing clock
+
+    if (timeoutRef !== null) {
+      clearInterval(timeoutRef);
+    }
+
+    setTimeoutRef(setInterval(() => {
+      setFirstValueActive (activePlayer => {
+        console.log(activePlayer)
+        if (activePlayer) {
+          setFirstValue(prevValue => {
+            if (prevValue <= 0) {
+              clearInterval(timeoutRef);
+              return 0;
+            }
+
+            return prevValue - 1
+          });
+        }
+
+        else {
+          setSecondValue(prevValue => {
+            if (prevValue <= 0) {
+              clearInterval(timeoutRef);
+              return 0;
+            }
+            return prevValue - 1
+          });
+        }
+        return activePlayer;
+      })
+    }, 1000));
+
+
+  }, [timeoutRef])
 
   return (
     <>
       <div>
-        <button className={"chess-watch chess-watch-" + theme} onClick={handleChangeCurrentWatch}>
+        <button className={"chess-watch chess-watch-" + theme} onClick={() => handleChangeCurrentWatch(true)}>
           <div className={"watch watch-" + theme}>
             <div>{Math.floor(firstValue / 60)}</div>: <div>{firstValue % 60}</div>
           </div>
         </button>
 
-        <button className={"chess-watch chess-watch-" + theme} onClick={handleChangeCurrentWatch}>
+        <button className={"chess-watch chess-watch-" + theme} onClick={() => handleChangeCurrentWatch(false)}>
           <div className={"watch watch-" + theme}>
             <div>{Math.floor(secondValue / 60)}</div>: <div>{secondValue % 60}</div>
           </div>
@@ -211,6 +228,7 @@ function App() {
           <button onClick={() => setCurrentPage(<StopWatch/>)}>StopWatch</button>
           <button onClick={() => setCurrentPage(<CountDown/>)}>CountDown</button>
           <button onClick={() => setCurrentPage(<ChessClock/>)}>ChessClock</button>
+          <a href="https://buy.stripe.com/dR66pheJedAr4sE7su"><button>Buy me a coffee</button></a>
         </div>
       </div>
 
