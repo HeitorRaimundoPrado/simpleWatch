@@ -27,6 +27,17 @@ const CountDown = () => {
     setTimeoutRef(setTimeout(handleOneSec, 1000));
   }, [value])
 
+  const handleSetTime = () => {
+    let intVal = parseInt(valStr);
+    if (isNaN(intVal)) {
+      alert("Invalid Input");
+      return;
+    }
+  
+    setValue(parseInt(valStr));
+    setValStr('');
+  }
+
   return (
     <>
       <div className={"watch watch-" + theme}>
@@ -34,7 +45,7 @@ const CountDown = () => {
       </div>
       <div className={"countdown-input countdown-input-" + theme}>
         <input className={"input-" + theme} type="text" placeholder="Countdown time in seconds" value={valStr} onChange={(e) => {setValStr(e.target.value)}}/>
-        <button className={"button-" + theme} onClick={() => {setValue(parseInt(valStr)); setValStr('')}}>Set Countdown</button>
+        <button className={"button-" + theme} onClick={handleSetTime}>Set Countdown</button>
       </div>
     </>
   )
@@ -137,12 +148,20 @@ const ChessClock = () => {
   }
 
   const handleSetClocks = () => {
+    let intFirstClock = parseInt(firstClockStr);
+    let intSecondClock = parseInt(secondClockStr);
+
+    if (isNaN(intFirstClock) || isNaN(intSecondClock)) {
+      alert("Invalid Input");
+      return;
+    }
+
     if (timeoutRef !== null) {
       clearTimeout(timeoutRef);
     }
 
-    setFirstValue(parseInt(firstClockStr));
-    setSecondValue(parseInt(secondClockStr));
+    setFirstValue(intFirstClock);
+    setSecondValue(intSecondClock);
     setFirstValueActive(false);
     setTimeoutRef(setTimeout(handleOneSec, 1000));
   };
